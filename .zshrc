@@ -22,6 +22,8 @@ EOF
 
 JIRA_URL=http://jira.caplin.com
 
+PATH=/usr/local/Cellar/findutils/4.4.2/bin/:$PATH
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
