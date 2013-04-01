@@ -1,28 +1,12 @@
-function vpn-connect() {
-/usr/bin/env osascript <<EOF
-tell application "System Events"
-        tell current location of network preferences
-                set VPN to service "Caplin"
-                if exists VPN then connect VPN
-        end tell
-end tell
-EOF
-}
-
-function vpn-disconnect() {
-/usr/bin/env osascript <<EOF
-tell application "System Events"
-        tell current location of network preferences
-                set VPN to service "Caplin"
-                if exists VPN then disconnect VPN
-        end tell
-end tell
-EOF
-}
 
 JIRA_URL=http://jira.caplin.com
 
 PATH=/usr/local/Cellar/findutils/4.4.2/bin/:$PATH
+
+# Stuff for git
+parse_git_branch () {
+    git branch 2> /dev/null | grep "*" | sed -e 's/* \(.*\)/ (\1)/g'
+}
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
@@ -64,19 +48,5 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
-PROMPT='$fg[cyan]%m: $fg[yellow]%~
-%{$reset_color%}>> '
-
-P4INFO=`p4 info`
-
-echo "$fg[green]"
-echo `zsh --version`
-echo ""
-echo "Perforce Info"
-echo ''
-echo $P4INFO | grep 'Client name'
-echo $P4INFO | grep 'Client root'
-echo $P4INFO | grep 'Client address'
-echo $P4INFO | grep 'Server address'
-
-echo $reset_color
+precmd(){print -rP "$fg[cyan]%m: $fg[yellow]%~ $fg[red]$(parse_git_branch)"}
+PROMPT="%{$reset_color%}>> "
